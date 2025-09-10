@@ -1,24 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#4f86ff" />
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-  <link rel="icon" href="./icons/icon-192.png">
-  <meta name="format-detection" content="telephone=no" />
-  <title>Basket Calendar — PWA</title>
-  <meta name="description" content="Calendrier d'entraînement basket : PWA iPhone, cycle 7 jours, séance du jour, cases à cocher." />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#4f86ff" name="theme-color"/>
+<link href="./manifest.webmanifest" rel="manifest"/>
+<link href="./icons/apple-touch-icon.png" rel="apple-touch-icon"/>
+<link href="./icons/icon-192.png" rel="icon"/>
+<meta content="telephone=no" name="format-detection"/>
+<title>Basket Jump — PWA</title>
+<meta content="Programmes de détente verticale (6, 10, 12 semaines) : PWA iPhone, calendrier, suivi et cases à cocher." name="description"/>
+<style>
     /* ===== Reset & base ===== */
     *,*::before,*::after{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%;height:100%}
     :root{
       color-scheme:light dark;
-      --bg:#070a12; --fg:#f5f7fb; --muted:#9aa3b2;
+      --bg:#0d1117; --fg:#f5f7fb; --muted:#9aa3b2;
       --card:#0d1118; --border:#1a2232;
       --accent:#4f86ff; --accent2:#22d3ee;
       --brand-sky:#bfe9ff; --brand-ball:#ff8a00; --brand-seam:#cc6b00;
@@ -28,7 +29,7 @@
     }
     @media (prefers-color-scheme:light){
       :root{
-        --bg:#f7f8fc; --fg:#0b1220; --muted:#667085;
+        --bg:#0d1117; --fg:#0b1220; --muted:#667085;
         --card:#ffffff; --border:#e6ebf4;
         --shadow:0 18px 40px rgba(0,0,0,.08);
       }
@@ -36,16 +37,14 @@
     body{
       margin:0; height:100%;
       background:
-        radial-gradient(1200px 800px at 50% -10%, color-mix(in lab, var(--accent) 18%, transparent), transparent 60%),
-        radial-gradient(900px 700px at 10% 110%, color-mix(in lab, var(--accent2) 14%, transparent), transparent 60%),
-        linear-gradient(180deg, color-mix(in lab, var(--bg) 96%, transparent), var(--bg) 70%);
+        #0d1117 18%, transparent), transparent 60%),
+        #0d1117 14%, transparent), transparent 60%),
+        #0d1117 96%, transparent), var(--bg) 70%);
       color:var(--fg);
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
       letter-spacing:.2px;
     }
-    /* Container tuned for iPhone 15 width */
     .container{ width:100%; max-width:430px; margin-inline:auto; }
-    /* Aurora blobs */
     .aurora{ position:fixed; inset:-10% -10% auto -10%; height:60vh; pointer-events:none; z-index:0; filter: blur(60px); opacity:.5 }
     .blob{ position:absolute; border-radius:999px; }
     .b1{ width:420px; height:420px; left:8%; top:10%; background: color-mix(in lab, var(--accent) 40%, transparent); animation: float 14s ease-in-out infinite alternate }
@@ -54,22 +53,20 @@
     @keyframes float{ from{ transform: translateY(0)} to{ transform: translateY(-12px)} }
     @media (prefers-reduced-motion: reduce){ .aurora{ display:none } }
 
-    /* ===== Splash / intro ===== */
     .splash{ position:fixed; inset:0; display:grid; place-items:center; z-index:50;
-      background: radial-gradient(900px 600px at 50% -10%, color-mix(in lab, var(--accent) 22%, transparent), transparent 60%), var(--bg);
+      background: #0d1117 22%, transparent), transparent 60%), var(--bg);
       transition: opacity .5s ease, visibility .5s ease;
     }
     .splash.hide{ opacity:0; visibility:hidden }
     .brand{ display:grid; place-items:center; gap:16px; text-align:center }
     .logoTile{ width:96px; height:96px; border-radius:26px; box-shadow:var(--shadow); position:relative }
-    .pulse{ position:absolute; inset:-10px; border-radius:32px; filter:blur(24px); opacity:.25; background: radial-gradient(closest-side, var(--brand-sky), transparent); animation: pulse 1.2s ease-out infinite alternate }
+    .pulse{ position:absolute; inset:-10px; border-radius:32px; filter:blur(24px); opacity:.25; background: #0d1117, transparent); animation: pulse 1.2s ease-out infinite alternate }
     @keyframes pulse{ from{ transform: scale(1)} to{ transform: scale(1.05)} }
     .bar{ width:min(460px,70vw); height:6px; border-radius:999px; overflow:hidden; border:1px solid var(--border); background:#0003 }
-    .bar i{ display:block; height:100%; width:0%; background: linear-gradient(90deg, var(--accent), var(--accent2)); animation: loadbar 1.1s ease forwards }
+    .bar i{ display:block; height:100%; width:0%; background: #0d1117, var(--accent2)); animation: loadbar 1.1s ease forwards }
     @keyframes loadbar{ to{ width:100% } }
     .brand h1{ margin:0; font-size:20px; letter-spacing:.3px }
 
-    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:5;
       padding: calc(12px + var(--safe-top)) 16px 12px;
@@ -78,35 +75,32 @@
       border-bottom:1px solid var(--border);
     }
     .title{ display:flex; align-items:center; gap:12px }
-    .logoWrap{ position:relative }
     .logoTileSm{ width:38px; height:38px; border-radius:14px; box-shadow:var(--shadow) }
     h1{ font-size:18px; margin:0 }
     .muted{ color:var(--muted) }
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }
 
-    /* ===== Layout ===== */
     main{ position:relative; z-index:1; padding:16px; padding-bottom: calc(18px + var(--safe-bottom)); }
-    .card{ background: linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), color-mix(in lab, var(--card) 84%, transparent)); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px; }
+    .card{ background: #0d1117 96%, transparent), color-mix(in lab, var(--card) 84%, transparent)); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px; }
     .grid{ display:grid; gap:12px }
-    .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap }
-    input[type="date"]{
+
+    .btn{ appearance:none; border:1px solid var(--border); background:color-mix(in lab, var(--accent) 12%, var(--card)); color:var(--fg); padding:12px 16px; border-radius:14px; font-weight:800; cursor:pointer; transition: transform .06s ease; touch-action: manipulation }
+    .btn:active{ transform: translateY(1px) }
+    .btn.primary{ background:#0d1117, var(--accent2)); color:white; border-color: color-mix(in lab, var(--accent) 50%, black) }
+    .btn.ghost{ background:transparent }
+    .pill{ padding:6px 10px; border-radius:999px; background:color-mix(in lab, var(--accent) 16%, transparent); color:var(--accent); font-weight:800; font-size:12px }
+    select, input[type="date"]{
       appearance:none; border:1px solid var(--border); border-radius:14px; padding:10px 12px;
       font:inherit; background:var(--card); color:var(--fg);
     }
-    .btn{ appearance:none; border:1px solid var(--border); background:color-mix(in lab, var(--accent) 12%, var(--card)); color:var(--fg); padding:12px 16px; border-radius:14px; font-weight:800; cursor:pointer; transition: transform .06s ease; touch-action: manipulation }
-    .btn:active{ transform: translateY(1px) }
-    .btn.primary{ background:linear-gradient(135deg, var(--accent), var(--accent2)); color:white; border-color: color-mix(in lab, var(--accent) 50%, black) }
-    .btn.ghost{ background:transparent }
-    .pill{ padding:6px 10px; border-radius:999px; background:color-mix(in lab, var(--accent) 16%, transparent); color:var(--accent); font-weight:800; font-size:12px }
 
-    /* ===== Focus Day (single card, slide) ===== */
-    .focus{ position:relative; }
     .focus .controls{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px }
-    .ctrl{ width:44px; height:44px; border-radius:14px; display:grid; place-items:center; border:1px solid var(--border); background:linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), color-mix(in lab, var(--card) 86%, transparent)); font-weight:900 }
+    .ctrl{ width:44px; height:44px; border-radius:14px; display:grid; place-items:center; border:1px solid var(--border); background:#0d1117 96%, transparent), color-mix(in lab, var(--card) 86%, transparent)); font-weight:900 }
     .ctrl:active{ transform: scale(.98) }
     .stack{ position:relative; min-height:190px; }
     .pane{
       position:absolute; inset:0; border-radius:22px; border:1px solid var(--border); padding:14px; text-align:center;
-      background: linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), color-mix(in lab, var(--card) 84%, transparent));
+      background: #0d1117 96%, transparent), color-mix(in lab, var(--card) 84%, transparent));
       box-shadow: var(--shadow);
       transform: translateX(0); opacity:1;
       transition: transform .28s cubic-bezier(.2,.7,.3,1), opacity .28s;
@@ -115,23 +109,21 @@
     .pane .big{ font-size:64px; font-weight:900; line-height:1; }
     .pane .sub{ margin-top:4px; font-size:12px; color:var(--muted) }
     .pane .title{ margin-top:8px; font-size:14px; color:var(--accent); font-weight:800 }
-    /* slide classes */
     .enter-from-right{ transform: translateX(100%); opacity:.6 }
     .enter-from-left{ transform: translateX(-100%); opacity:.6 }
     .exit-to-left{ transform: translateX(-100%); opacity:.2 }
     .exit-to-right{ transform: translateX(100%); opacity:.2 }
 
-    /* ===== Calendar (grid) ===== */
     .cal{ display:grid; grid-template-columns: repeat(7,1fr); gap:12px }
-    .dow{ text-align:center; font-size:12px; color:var(--muted); position:sticky; top:0; z-index:1; background:linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), transparent); padding:6px 0 4px; }
+    .dow{ text-align:center; font-size:12px; color:var(--muted); position:sticky; top:0; z-index:1; background:#0d1117 96%, transparent), transparent); padding:6px 0 4px; }
     .calWrap{ max-height:50vh; overflow:auto; overscroll-behavior:contain; scroll-behavior:smooth; border-radius:18px; -webkit-overflow-scrolling: touch; }
-    .fadeMask{ mask-image: linear-gradient(to bottom, transparent 0, black 16px, black calc(100% - 16px), transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 16px, black calc(100% - 16px), transparent 100%); }
+    .fadeMask{ mask-image: #0d1117, transparent 100%); -webkit-mask-image: #0d1117, transparent 100%); }
 
     .day{
       position:relative; aspect-ratio:1/1; border:1px solid transparent; border-radius:22px;
       background:
-        linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), color-mix(in lab, var(--card) 80%, transparent)) padding-box,
-        linear-gradient(135deg, color-mix(in lab, var(--accent) 50%, transparent), color-mix(in lab, var(--accent2) 40%, transparent)) border-box;
+        #0d1117 96%, transparent), color-mix(in lab, var(--card) 80%, transparent)) padding-box,
+        #0d1117 50%, transparent), color-mix(in lab, var(--accent2) 40%, transparent)) border-box;
       padding:8px; display:flex; flex-direction:column; justify-content:center; align-items:center;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
       overflow:hidden;
@@ -146,17 +138,16 @@
     .legend{ display:flex; gap:8px; align-items:center; justify-content:flex-end; font-size:12px; }
     .dot{ width:10px; height:10px; border-radius:999px; background:var(--ok); box-shadow:0 0 0 4px color-mix(in lab, var(--ok) 20%, transparent) }
 
-    /* ===== Modal ===== */
     .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:40; }
     .modal.open{ display:grid; }
     .overlay{ position:absolute; inset:0; background:color-mix(in lab, black 45%, transparent); backdrop-filter: blur(6px); animation: fade .2s both }
     .sheet{ position:relative; width:min(720px, 94vw); max-height:90vh; overflow:auto; border-radius:24px; border:1px solid var(--border);
       background:
-        linear-gradient(180deg, color-mix(in lab, var(--card) 96%, transparent), color-mix(in lab, var(--card) 84%, transparent)) padding-box,
-        linear-gradient(135deg, color-mix(in lab, var(--accent) 50%, transparent), color-mix(in lab, var(--accent2) 44%, transparent)) border-box;
+        #0d1117 96%, transparent), color-mix(in lab, var(--card) 84%, transparent)) padding-box,
+        #0d1117 50%, transparent), color-mix(in lab, var(--accent2) 44%, transparent)) border-box;
       box-shadow: var(--shadow); animation: sheetIn .24s cubic-bezier(.2,.7,.3,1) both
     }
-    .sheet header{ position:sticky; top:0; background:linear-gradient(180deg, color-mix(in lab, var(--card) 78%, transparent), transparent); border-bottom:1px solid var(--border); padding:14px 16px }
+    .sheet header{ position:sticky; top:0; background:#0d1117 78%, transparent), transparent); border-bottom:1px solid var(--border); padding:14px 16px }
     .sheet .content{ padding:14px 16px 18px }
     .titleRow{ display:flex; justify-content:space-between; align-items:center; gap:10px }
     .x{ appearance:none; background:transparent; border:1px solid var(--border); width:38px; height:38px; border-radius:12px; display:grid; place-items:center; color:var(--muted); font-weight:900; }
@@ -166,189 +157,141 @@
     .disabled{ opacity:.5; pointer-events:none }
     @keyframes fade{ from{ opacity:0 } to{ opacity:1 } }
     @keyframes sheetIn{ from{ transform: translateY(10px); opacity:0 } to{ transform:none; opacity:1 } }
-
-    /* ===== Reduced motion ===== */
-    @media (prefers-reduced-motion: reduce){
-      .splash, .day, .sheet, .pane{ animation: none !important; transition: none !important }
-      .aurora{ display:none }
-    }
   </style>
-</head>
+<style id="no-loader-patch">
+/* Loader removal patch */
+#loader, #loading, #splash, #splash-screen, #preloader, #pre-load, #page-loader, #overlay-loader,
+.loader, .loading, .loading-overlay, .splash, .splash-screen, .preloader, .pre-load, .page-loader, .overlay-loader, .spinner, .screen-loader {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+body.loading, body.is-loading { overflow: auto !important; }
+.hidden, .invisible, .d-none, .is-hidden { display: initial !important; visibility: visible !important; opacity: 1 !important; }
+</style><script id="no-loader-script">
+document.addEventListener('DOMContentLoaded', function() {
+  ['loader','loading','splash','splash-screen','preloader','pre-load','page-loader','overlay-loader'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el && el.parentNode) { el.parentNode.removeChild(el); }
+  });
+  document.body.classList.remove('loading','is-loading');
+  var app = document.getElementById('app') || document.getElementById('root') || document.querySelector('main,.app,[data-app]');
+  if (app) {
+    app.style.removeProperty('display');
+    app.style.removeProperty('visibility');
+    app.style.removeProperty('opacity');
+    app.classList.remove('hidden','invisible','d-none','is-hidden');
+  }
+});
+</script><style id="solid-bg-patch">
+/* Solid background override */
+html, body {
+  background: #0d1117 !important;
+  background-color: #0d1117 !important;
+}
+</style></head>
 <body>
-
-</head>
-<body>
-  <!-- Animated background blobs -->
-  <div class="aurora" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-  </div>
-
-  <!-- Splash screen with logo -->
-  <div class="splash" id="splash">
-    <div class="brand">
-      <div class="logoTile">
-        <div class="pulse"></div>
-        <svg viewBox="0 0 100 100" width="96" height="96" style="border-radius:26px; display:block">
-          <rect x="0" y="0" width="100" height="100" rx="26" fill="var(--brand-sky)"/>
-          <ellipse cx="50" cy="66" rx="18" ry="6" fill="rgba(0,0,0,.12)"/>
-          <circle cx="50" cy="50" r="22" fill="var(--brand-ball)" />
-          <path d="M28,50 C40,52 60,48 72,50" stroke="var(--brand-seam)" stroke-width="3" fill="none" opacity=".85"/>
-          <path d="M50,28 C48,40 52,60 50,72" stroke="var(--brand-seam)" stroke-width="3" fill="none" opacity=".85"/>
-        </svg>
-      </div>
-      <h1>Basket Calendar</h1>
-      <div class="bar"><i></i></div>
-    </div>
-  </div>
-
-  <div class="container">
-    <header>
-      <div class="title">
-        <div class="logoWrap">
-          <svg class="logoTileSm" viewBox="0 0 100 100">
-            <rect x="0" y="0" width="100" height="100" rx="18" fill="var(--brand-sky)"/>
-            <circle cx="50" cy="50" r="24" fill="var(--brand-ball)"/>
-            <path d="M28,50 C40,52 60,48 72,50" stroke="var(--brand-seam)" stroke-width="4" fill="none" opacity=".85"/>
-            <path d="M50,26 C48,40 52,60 50,74" stroke="var(--brand-seam)" stroke-width="4" fill="none" opacity=".85"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Basket Calendar</h1>
-          <div class="muted">Cycle de 7 jours · iPhone‑15 optimisé</div>
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px; gap:10px">
-        <div class="pill">Début de cycle</div>
-        <input type="date" id="cycleStart" />
-        <button class="btn primary" id="btnToday">Aujourd'hui</button>
-      </div>
-    </header>
-
-    <main class="grid">
-      <!-- Focus Day (single animated card) -->
-      <section class="card focus" aria-label="Sélecteur de jour (focus)">
-        <div class="controls">
-          <button id="prevBtn" class="ctrl" aria-label="Jour précédent">◀</button>
-          <div class="muted" id="focusMeta"></div>
-          <button id="nextBtn" class="ctrl" aria-label="Jour suivant">▶</button>
-        </div>
-        <div class="stack" id="focusStack">
-          <div class="pane" id="paneA">
-            <div>
-              <div class="big" id="numA">—</div>
-              <div class="sub" id="subA">—</div>
-              <div class="title" id="titleA">—</div>
-              <div style="margin-top:10px"><button class="btn" id="btnA">Voir la séance</button></div>
-            </div>
-          </div>
-          <div class="pane" id="paneB" style="display:none">
-            <div>
-              <div class="big" id="numB">—</div>
-              <div class="sub" id="subB">—</div>
-              <div class="title" id="titleB">—</div>
-              <div style="margin-top:10px"><button class="btn" id="btnB">Voir la séance</button></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Month calendar -->
-      <div class="card">
-        <div class="row" style="justify-content:space-between; align-items:center">
-          <div class="row" style="align-items:baseline; gap:10px">
-            <div style="font-weight:900; font-size:18px" id="monthLabel">Mois</div>
-            <div class="muted" id="cycleHint"></div>
-          </div>
-          <div class="legend"><span class="dot"></span> fait</div>
-        </div>
-
-        <div id="calendarScroll" class="calWrap fadeMask" role="region" aria-label="Calendrier du mois">
-          <div class="cal">
-            <div class="dow">Lun</div><div class="dow">Mar</div><div class="dow">Mer</div><div class="dow">Jeu</div><div class="dow">Ven</div><div class="dow">Sam</div><div class="dow">Dim</div>
-          </div>
-          <div class="cal" id="calendarGrid"></div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Modal: séance du jour -->
-  <div class="modal" id="modal">
-    <div class="overlay" id="overlay"></div>
-    <div class="sheet">
-      <header>
-        <div class="titleRow">
-          <div>
-            <div style="font-size:12px; color:var(--muted)" id="modalDate"></div>
-            <div style="font-size:16px; font-weight:900; color:var(--accent)" id="modalTitle">Séance</div>
-          </div>
-          <button class="x" id="close">✕</button>
-        </div>
-      </header>
-      <div class="content">
-        <ul class="list" id="workList"></ul>
-        <div class="row" style="margin-top:12px">
-          <button class="btn" id="checkAll">Tout cocher</button>
-          <button class="btn primary" id="saveClose">Terminer</button>
-        </div>
-        <div class="muted" id="infoNote" style="margin-top:8px"></div>
-      </div>
-    </div>
-  </div>
-
-  
-  <script>
+<div aria-hidden="true" class="aurora">
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+</div>
+<div class="container">
+<header>
+<div class="title">
+<svg class="logoTileSm" viewbox="0 0 100 100">
+<rect fill="var(--brand-sky)" height="100" rx="18" width="100" x="0" y="0"></rect>
+<circle cx="50" cy="50" fill="var(--brand-ball)" r="24"></circle>
+<path d="M28,50 C40,52 60,48 72,50" fill="none" opacity=".85" stroke="var(--brand-seam)" stroke-width="4"></path>
+<path d="M50,26 C48,40 52,60 50,74" fill="none" opacity=".85" stroke="var(--brand-seam)" stroke-width="4"></path>
+</svg>
+<div>
+<h1>Basket Jump</h1>
+<div class="muted">Programmes 6, 10, 12 semaines · iPhone‑15 optimisé</div>
+</div>
+</div>
+<div class="row" style="margin-top:10px; gap:10px">
+<div class="pill">Programme</div>
+<select aria-label="Sélecteur de programme" id="programSelect">
+<option value="pro6">FR · PRO Performance — 6 semaines</option>
+<option value="hg10">EN · The Hoops Geek — 10 weeks</option>
+<option value="vc12">FR · Vert Code (inspiré) — 12 semaines</option>
+</select>
+<div class="pill">Début</div>
+<input id="cycleStart" type="date"/>
+<button class="btn primary" id="btnToday">Aujourd'hui</button>
+</div>
+</header>
+<main class="grid">
+<section aria-label="Sélecteur de jour (focus)" class="card focus">
+<div class="controls">
+<button aria-label="Jour précédent" class="ctrl" id="prevBtn">◀</button>
+<div class="muted" id="focusMeta"></div>
+<button aria-label="Jour suivant" class="ctrl" id="nextBtn">▶</button>
+</div>
+<div class="stack" id="focusStack">
+<div class="pane" id="paneA">
+<div>
+<div class="big" id="numA">—</div>
+<div class="sub" id="subA">—</div>
+<div class="title" id="titleA">—</div>
+<div style="margin-top:10px"><button class="btn" id="btnA">Voir la séance</button></div>
+</div>
+</div>
+<div class="pane" id="paneB" style="display:none">
+<div>
+<div class="big" id="numB">—</div>
+<div class="sub" id="subB">—</div>
+<div class="title" id="titleB">—</div>
+<div style="margin-top:10px"><button class="btn" id="btnB">Voir la séance</button></div>
+</div>
+</div>
+</div>
+</section>
+<div class="card">
+<div class="row" style="justify-content:space-between; align-items:center">
+<div class="row" style="align-items:baseline; gap:10px">
+<div id="monthLabel" style="font-weight:900; font-size:18px">Mois</div>
+<div class="muted" id="cycleHint"></div>
+</div>
+<div class="legend"><span class="dot"></span> fait</div>
+</div>
+<div aria-label="Calendrier du mois" class="calWrap fadeMask" id="calendarScroll" role="region">
+<div class="cal">
+<div class="dow">Lun</div><div class="dow">Mar</div><div class="dow">Mer</div><div class="dow">Jeu</div><div class="dow">Ven</div><div class="dow">Sam</div><div class="dow">Dim</div>
+</div>
+<div class="cal" id="calendarGrid"></div>
+</div>
+</div>
+</main>
+</div>
+<div class="modal" id="modal">
+<div class="overlay" id="overlay"></div>
+<div class="sheet">
+<header>
+<div class="titleRow">
+<div>
+<div id="modalDate" style="font-size:12px; color:var(--muted)"></div>
+<div id="modalTitle" style="font-size:16px; font-weight:900; color:var(--accent)">Séance</div>
+<div id="modalPhase" style="font-size:12px; color:var(--muted)"></div>
+</div>
+<button class="x" id="close">✕</button>
+</div>
+</header>
+<div class="content">
+<ul class="list" id="workList"></ul>
+<div class="row" style="margin-top:12px">
+<button class="btn" id="checkAll">Tout cocher</button>
+<button class="btn primary" id="saveClose">Terminer</button>
+</div>
+<div class="muted" id="infoNote" style="margin-top:8px"></div>
+</div>
+</div>
+</div>
+<script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
     }
-
-    // ===== Plans 7 jours =====
-    // Indexés Lundi->Dimanche (0..6) mais on sélectionnera par "jour réel de la semaine"
-    const PLANS = [
-      { title: "Lundi — Upper + Handle", items: [
-        "Échauffement : corde 5′ + mobilité hanches/épaules/chevilles",
-        "Handle 10′ : alterné bas 2×45s · cross 2×45s · combo 2×45s · main faible 2×45s (15s)",
-        "Pompes 4×10–15 · pompes serrées 3×8–12 · dips 3×8–12 · KB press 3×8/bras",
-        "Tirage : tractions 3–4×max OU KB row 4×10/bras",
-        "Core : planche 3×45s + hollow 3×20s"
-      ]},
-      { title: "Mardi — Jambes + Plyo", items: [
-        "Échauffement : corde 5′ + ponts 2×15",
-        "Goblet squat KB 4×8–12 · fentes avant 3×10/j · fentes latérales 3×8/j · SDT JT KB 3×10/j",
-        "Plyo : 3 tours — 30s squats sautés + 30s fentes sautées + 30s repos",
-        "Agilité : pas rapides 3×30s",
-        "Core : planche latérale 3×30s/côté · bird‑dog 2×12"
-      ]},
-      { title: "Mercredi — Core + Agilité", items: [
-        "Handle 10′ : aveugle 2×60s · 2 ballons 3×45s (si possible)",
-        "Core ×3 : mountain 30s · dead bug 12 · twist KB 20 · pont fessier 15",
-        "Réactivité : bonds latéraux 3×30s · pas chassés 4×20m"
-      ]},
-      { title: "Jeudi — Dos/Tractions + Handle", items: [
-        "Handle 10′ : main faible + changements de rythme",
-        "Tractions 4×max OU KB row 4×12/bras · Y‑T‑W 3×10",
-        "Curl KB 3×12 · planche avec reach 3×10/bras"
-      ]},
-      { title: "Vendredi — Full body + Cardio", items: [
-        "Circuit ×4 : KB swing 12 · pompes 12 · goblet 12 · burpees 10 · sprint 20s (90s repos)"
-      ]},
-      { title: "Samedi — Terrain (90 min)", items: [
-        "Échauffement 10′ : jogging léger · lay‑ups 2 mains · mobilité",
-        "Form shooting : 5×10 près du cercle",
-        "Mi‑distance : 5 spots ×10 (≥7/10 avant de reculer)",
-        "3 points : 5 spots ×8 (≥6/8 si maîtrisé)",
-        "Pull‑up après dribble : 5×6 (D/G)",
-        "Catch & shoot en mouvement : 20",
-        "Floaters 2×10 · Finitions main faible 20",
-        "Rebond : 3×10 auto contre planche",
-        "LF : 3×10 (≥80%)"
-      ]},
-      { title: "Dimanche — Repos actif / mobilité", items: [
-        "Marche légère, mobilité, étirements profonds, tir libre plaisir"
-      ]}
-    ];
 
     // ===== Helpers dates =====
     const $ = s => document.querySelector(s);
@@ -361,8 +304,253 @@
     const mod = (n,m)=> ((n % m) + m) % m;
     const fmtMonth = (y,m)=> new Date(y,m,1).toLocaleDateString('fr-CH',{month:'long',year:'numeric'});
     const DOWS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']; // 0..6
-    // map weekday -> plan index (Mon->0 ... Sun->6)
-    const PLAN_BY_WEEKDAY = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
+    const DOWS_MF = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']; // Monday-first label
+
+    // ===== Programs (generated structures) =====
+    function makeDay(title, items){ return { title, items }; }
+
+    // PRO Performance 6 weeks (5 entraînements/semaine)
+    function buildPRO6(){
+      const weeks = [];
+      for(let w=1; w<=6; w++){
+        const intens = w<=2 ? 'Base' : (w<=4 ? 'Progression' : 'Intensif');
+        weeks.push([
+          makeDay(`S${w}Lun — Plyo + Chevilles (${intens})`, [
+            "Échauffement : corde 5′ + mobilité hanches/chevilles",
+            "Ankle hops 4×20 · pogos 3×15",
+            "Sauts verticaux max 5×5 (repos 60–90s)",
+            "Fentes sautées 3×10/jambe",
+            "Mollets debout 3×20",
+            "Gainage planche 3×40s"
+          ]),
+          makeDay(`S${w}Mar — Force légère (KB 10kg)`, [
+            "Échauffement dynamique 6′",
+            "Goblet squat 4×10 (tempo explosif)",
+            "Fentes avant 3×10/jambe (KB)",
+            "Soulevé JT (KB) 3×12",
+            "Hip thrust 3×12 (tempo rapide)",
+            "Core : side plank 3×30s/côté"
+          ]),
+          makeDay(`S${w}Mer — Réactivité + Agilité`, [
+            "Corde à sauter 5′ (double-unders si possible)",
+            "Slalom jumps 4×20 (latéraux courts)",
+            "Depth drops 4×5 (30–40cm) + stick landings",
+            "Pas rapides échelle 4×20s",
+            "Sprint 4×20m (repos complet)",
+            "Étirements dynamiques 5′"
+          ]),
+          makeDay(`S${w}Jeu — Force dynamique (KB)`, [
+            "Échauffement 6′",
+            "KB swing 5×12",
+            "Bulgarian split squat 3×8/jambe (KB)",
+            "Jump squats 4×6 (poids du corps)",
+            "Nordic curl assisté 3×6 (si possible)",
+            "Gainage hollow 3×25s"
+          ]),
+          makeDay(`S${w}Ven — Combo Power`, [
+            "Circuit ×4 : KB swing 12 · goblet 10 · fentes sautées 8/j · burpees 10",
+            "Sprints 3×30m",
+            "Sauts touches cercle 3×8 (temps de contact au sol minimal)",
+            "Mobility 6′"
+          ]),
+          makeDay(`S${w}Sam — Session Dunk/Tech`, [
+            "Échauffement 10′ (lay‑ups 2 mains, mobilité)",
+            "Approche 2 pieds : 6×3 tentatives (vidéo si possible)",
+            "Dunks 1 main → 2 mains : 6×3 tentatives",
+            "Finitions main faible 3×10",
+            "LF 3×10 (≥80%)"
+          ]),
+          makeDay(`S${w}Dim — Repos actif`, [
+            "Marche légère 20–30′",
+            "Mobilité complète (hanches, chevilles)",
+            "Respiration / bain froid (optionnel)"
+          ])
+        ]);
+      }
+      return weeks;
+    }
+
+    // The Hoops Geek 10 weeks (3 séances/sem)
+    function buildHG10(){
+      const weeks = [];
+      for(let w=1; w<=10; w++){
+        const phase = w<=3 ? 'Phase 1 — Base' : (w<=7 ? 'Phase 2 — Puissance' : 'Phase 3 — Réactivité');
+        const mon = w<=3 ?
+          makeDay(`S${w}Lun — ${phase}`, [
+            "Warm‑up : corde 5–8′ + dynamique",
+            "Ankle hops 3×25 · lateral line jumps 3×20",
+            "Bodyweight squats 3×15 (explosif)",
+            "Split squats 3×10/jambe",
+            "Plank 3×40s · back extensions 3×12"
+          ]) :
+          (w<=7 ? makeDay(`S${w}Lun — ${phase}`, [
+            "Warm‑up 6′",
+            "Power skipping 4×30m",
+            "Tuck jumps 4×6",
+            "Depth jumps 4×5 (30–40cm)",
+            "Pistol squat assisté 3×6/jambe"
+          ]) : makeDay(`S${w}Lun — ${phase}`, [
+            "Warm‑up 6′",
+            "Rim jumps 5×6 (contact au sol minimal)",
+            "Seated box jumps 5×5",
+            "Sprints 4×30m (repos complet)",
+            "Mobility 5′"
+          ]));
+        const wed = w<=3 ? makeDay(`S${w}Mer — ${phase}`, [
+            "Warm‑up 6′",
+            "Drop & freeze 4×5 (30–40cm)",
+            "Box jumps 4×6 (60–90s repos)",
+            "Single‑leg RDL (poids du corps/KB) 3×10/j",
+            "Side plank 3×30s/côté"
+          ]) :
+          (w<=7 ? makeDay(`S${w}Mer — ${phase}`, [
+            "Warm‑up 6′",
+            "Med‑ball back throws 4×6 (ou KB swing léger)",
+            "Boundings 3×20m",
+            "Depth jumps 4×5 (40–50cm)",
+            "Core : hollow 3×25s"
+          ]) : makeDay(`S${w}Mer — ${phase}`, [
+            "Warm‑up 6′",
+            "Depth jumps 5×4 (hauteur modérée)",
+            "Rim touches 5×6 (enchaînés)",
+            "Sprints 4×20m",
+            "Mobility 5′"
+          ]));
+        const fri = w<=3 ? makeDay(`S${w}Ven — ${phase}`, [
+            "Warm‑up 6′",
+            "Jump squats 4×8 (poids du corps)",
+            "Lunge jumps 3×8/j",
+            "Calf raises 3×20",
+            "Plank variations 3×40s"
+          ]) :
+          (w<=7 ? makeDay(`S${w}Ven — ${phase}`, [
+            "Warm‑up 6′",
+            "Seated box jumps 4×5",
+            "Single‑leg bounds 3×20m",
+            "KB goblet squat 4×8 (explosif)",
+            "Side plank 3×35s/côté"
+          ]) : makeDay(`S${w}Ven — ${phase}`, [
+            "Warm‑up 6′",
+            "Rim jumps 5×6",
+            "Tuck jumps 4×6",
+            "Plyo push‑ups 3×8 (transfer upper)",
+            "Mobility 5′"
+          ]));
+        weeks.push([
+          mon,
+          makeDay(`S${w}Mar — Mobility`, [
+            "Corde 5′ + mobilité complète 10′",
+            "Foam roll 5′"
+          ]),
+          wed,
+          makeDay(`S${w}Jeu — Off / léger`, [
+            "Marche 20′ · étirements doux"
+          ]),
+          fri,
+          makeDay(`S${w}Sam — Session dunk`, [
+            "Approche 2 pieds : 6×3 tentatives",
+            "Dunk 1→2 mains : 5×3",
+            "LF : 3×10"
+          ]),
+          makeDay(`S${w}Dim — Repos`, [
+            "Repos complet ou mobilité douce"
+          ])
+        ]);
+      }
+      return weeks;
+    }
+
+    // Vert Code Inspired 12 weeks (Force -> Puissance -> Réactivité)
+    function buildVC12(){
+      const weeks = [];
+      for(let w=1; w<=12; w++){
+        const phase = w<=4 ? 'Phase 1 — Force' : (w<=8 ? 'Phase 2 — Puissance' : 'Phase 3 — Réactivité');
+        weeks.push([
+          makeDay(`S${w}Lun — ${phase}`, [
+            "Échauffement 8′ + mobilité hanches/chevilles",
+            ...(w<=4 ? [
+              "Goblet squat (KB) 5×8",
+              "Hip thrust 4×10",
+              "Nordic curl assisté 3×6",
+              "Plank 3×45s"
+            ] : w<=8 ? [
+              "KB swing 5×12",
+              "Trap/KB jump shrug 4×5 (léger)",
+              "Depth drops 4×5 (40cm)",
+              "Hollow hold 3×25s"
+            ] : [
+              "Rim jumps réactifs 6×6",
+              "Depth jumps 5×4 (hauteur modérée)",
+              "Sprints 5×20m",
+              "Mobility 6′"
+            ])
+          ]),
+          makeDay(`S${w}Mar — Technique de saut`, [
+            "Approche 2 pieds : 6×3 tentatives",
+            "Séquence : drop step ➜ 2 pieds ➜ finition 2 mains",
+            "Vidéo/feedback (si possible)",
+            "Mobility 8′"
+          ]),
+          makeDay(`S${w}Mer — ${phase}`, [
+            ...(w<=4 ? [
+              "Bulgarian split squat 4×8/j (KB)",
+              "Soulevé JT (KB) 4×10",
+              "Jump squats 4×6",
+              "Core : side plank 3×35s/côté"
+            ] : w<=8 ? [
+              "Bounds 4×20m",
+              "Tuck jumps 4×6",
+              "KB goblet squat 4×6 (explosif)",
+              "Back extensions 3×12"
+            ] : [
+              "Rim touches enchaînés 6×6",
+              "Seated box jumps 5×5",
+              "Sprints 4×30m (repos complet)",
+              "Mobility 6′"
+            ])
+          ]),
+          makeDay(`S${w}Jeu — Upper/Tronc (support)`, [
+            "Pompes 4×12 · tractions/rows 4×10",
+            "Plyo push‑ups 3×8",
+            "Twist (KB) 3×20 · hollow 3×25s",
+            "Étirements épaules/chevilles 6′"
+          ]),
+          makeDay(`S${w}Ven — ${phase}`, [
+            ...(w<=4 ? [
+              "Goblet squat 4×8 (lourd possible)",
+              "Hip hinge (KB) 4×10",
+              "Mollets 4×18",
+              "Plank 3×45s"
+            ] : w<=8 ? [
+              "Med‑ball/KB throws 4×6",
+              "Depth jumps 5×4 (50cm si ok)",
+              "Lunge jumps 4×8/j",
+              "Core : anti‑rotation 3×10/side"
+            ] : [
+              "Rim jumps (temps de contact minimal) 6×6",
+              "Sprints 5×20m",
+              "Mobility 8′"
+            ])
+          ]),
+          makeDay(`S${w}Sam — Session Dunk/Match`, [
+            "Échauffement 10′ + lay‑ups",
+            "Dunk 2 pieds 2 mains : 8×3",
+            "Scénarios match : rebond ➜ dunk, réception ➜ dunk",
+            "LF : 3×10 (≥80%)"
+          ]),
+          makeDay(`S${w}Dim — Repos`, [
+            "Repos complet ou marche + mobilité"
+          ])
+        ]);
+      }
+      return weeks;
+    }
+
+    const PROGRAMS = {
+      pro6: { name:"PRO Performance — 6 semaines", totalWeeks:6, weeks: buildPRO6() },
+      hg10: { name:"The Hoops Geek — 10 weeks", totalWeeks:10, weeks: buildHG10() },
+      vc12: { name:"Vert Code (inspiré) — 12 semaines", totalWeeks:12, weeks: buildVC12() },
+    };
 
     // ===== State =====
     let today = new Date();
@@ -370,33 +558,73 @@
     let viewYear = today.getFullYear();
     let viewMonth = today.getMonth();
     let cycleStart = localStorage.getItem('cycleStart') || todayISO;
+    let programKey = localStorage.getItem('programKey') || 'pro6';
+    let focusDate = todayISO;
+
+    const programSelect = $('#programSelect');
+    programSelect.value = programKey;
     $('#cycleStart').value = cycleStart;
-    let focusDate = todayISO; // focus on "today"
+
+    // ===== Plan lookup =====
+    function getWeekIndex(iso){
+      const days = Math.max(0, diffDays(cycleStart, iso));
+      return Math.floor(days/7); // 0-based week
+    }
+    function getProgram(){ return PROGRAMS[programKey] || PROGRAMS.pro6; }
+    function planFor(iso){
+      const prog = getProgram();
+      let w = getWeekIndex(iso); // 0..
+      if (w >= prog.totalWeeks) w = prog.totalWeeks - 1; // après la fin, on répète la dernière semaine
+      const week = prog.weeks[w];
+      const wd = fromISO(iso).getDay(); // 0=Dim..6=Sam
+      // map to Monday-first index 0..6
+      const idx = (wd+6)%7;
+      return { data: week[idx], weekNum: w+1, phase: inferPhase(prog, w+1) };
+    }
+    function inferPhase(prog, weekNum){
+      if (prog === PROGRAMS.pro6){
+        if (weekNum<=2) return "Base";
+        if (weekNum<=4) return "Progression";
+        return "Intensif";
+      }
+      if (prog === PROGRAMS.hg10){
+        if (weekNum<=3) return "Phase 1 — Base";
+        if (weekNum<=7) return "Phase 2 — Puissance";
+        return "Phase 3 — Réactivité";
+      }
+      if (prog === PROGRAMS.vc12){
+        if (weekNum<=4) return "Phase 1 — Force";
+        if (weekNum<=8) return "Phase 2 — Puissance";
+        return "Phase 3 — Réactivité";
+      }
+      return "";
+    }
 
     // ===== Focus rendering & animation =====
-    function dayIndex(iso){ return mod(diffDays(cycleStart, iso), 7); } // 0..6
-    function planFor(iso){
-      const wd = fromISO(iso).getDay(); // 0=Dim..6=Sam
-      return PLANS[ PLAN_BY_WEEKDAY[wd] ] || { title:"Séance", items:[] };
+    function dayIndex(iso){
+      const days = Math.max(0, diffDays(cycleStart, iso));
+      return (days % 7);
     }
     function updatePane(paneId, iso){
       const d = fromISO(iso);
       const num = d.getDate();
-      const sub = `${DOWS[d.getDay()]} · Jour ${dayIndex(iso)+1}/7`;
-      const title = planFor(iso).title;
-      $('#'+(paneId==='A'?'numA':'numB')).textContent = String(num);
-      $('#'+(paneId==='A'?'subA':'subB')).textContent = sub;
-      $('#'+(paneId==='A'?'titleA':'titleB')).textContent = title;
-      const btn = $('#'+(paneId==='A'?'btnA':'btnB'));
+      const meta = planFor(iso);
+      const sub = `${DOWS[d.getDay()]} · Semaine ${meta.weekNum}/${getProgram().totalWeeks}`;
+      const title = meta.data?.title || "Séance";
+      const idBase = (paneId==='A') ? 'A' : 'B';
+      document.getElementById('num'+idBase).textContent = String(num);
+      document.getElementById('sub'+idBase).textContent = sub;
+      document.getElementById('title'+idBase).textContent = title;
+      const btn = document.getElementById('btn'+idBase);
       btn.onclick = ()=>{
         const isToday = iso === todayISO;
         openModal(iso, isToday);
       };
-      $('#focusMeta').textContent = (iso===todayISO) ? "Aujourd'hui" : `Sélection : ${iso}`;
+      document.getElementById('focusMeta').textContent = (iso===todayISO) ? "Aujourd'hui" : `Sélection : ${iso}`;
     }
 
     let showingA = true;
-    function animateTo(targetISO, direction){ // direction: 'next' or 'prev'
+    function animateTo(targetISO, direction){
       if(targetISO === focusDate) return;
       const currentPane = showingA ? $('#paneA') : $('#paneB');
       const nextPane = showingA ? $('#paneB') : $('#paneA');
@@ -405,23 +633,11 @@
       currentPane.classList.remove('enter-from-left','enter-from-right','exit-to-left','exit-to-right');
 
       updatePane(showingA ? 'B' : 'A', targetISO);
-      // prepare positions
-      if(direction === 'next'){
-        nextPane.classList.add('enter-from-right');
-      } else {
-        nextPane.classList.add('enter-from-left');
-      }
-      // force reflow
+      if(direction === 'next'){ nextPane.classList.add('enter-from-right'); } else { nextPane.classList.add('enter-from-left'); }
       void nextPane.offsetWidth;
-      // animate
-      if(direction === 'next'){
-        currentPane.classList.add('exit-to-left');
-      } else {
-        currentPane.classList.add('exit-to-right');
-      }
+      if(direction === 'next'){ currentPane.classList.add('exit-to-left'); } else { currentPane.classList.add('exit-to-right'); }
       nextPane.classList.remove('enter-from-right','enter-from-left');
 
-      // when transition ends, hide old and swap
       const onEnd = ()=>{
         currentPane.style.display = 'none';
         currentPane.classList.remove('exit-to-left','exit-to-right');
@@ -432,8 +648,7 @@
       currentPane.addEventListener('transitionend', onEnd);
     }
 
-    function renderFocus(initial=false){
-      // Initial draw into paneA
+    function renderFocus(){
       updatePane('A', focusDate);
       $('#paneA').style.display = 'grid';
       $('#paneB').style.display = 'none';
@@ -443,12 +658,12 @@
     // ===== Calendar render =====
     function renderCalendar(){
       $('#monthLabel').textContent = fmtMonth(viewYear, viewMonth);
-      $('#cycleHint').textContent = `Début: ${cycleStart}`;
+      const prog = getProgram();
+      $('#cycleHint').textContent = `${prog.name} · Début ${cycleStart}`;
       const grid = $('#calendarGrid'); grid.innerHTML = '';
       const first = new Date(viewYear, viewMonth, 1);
-      const startOffset = (first.getDay() + 6) % 7; // Monday=0 for layout
+      const startOffset = (first.getDay() + 6) % 7; // Monday=0
       const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
-      // leading blanks
       for(let i=0;i<startOffset;i++){ const ph = document.createElement('div'); grid.appendChild(ph); }
       let todayEl = null;
       for(let d=1; d<=daysInMonth; d++){
@@ -456,15 +671,14 @@
         const iso = ISO(date);
         const cell = document.createElement('button');
         cell.className = 'day'; cell.type = 'button';
-        const dow = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'][(date.getDay()+6)%7];
-        const jour = dayIndex(iso)+1;
-        cell.innerHTML = `<div class="n">${d}</div><div class="label">${dow} · Jour ${jour}/7</div>`;
-        const isToday = todayISO === iso;
-        if(isToday){ cell.classList.add('today'); todayEl = cell; }
-        const doneKey = `done:${iso}`;
+        const dow = DOWS_MF[(date.getDay()+6)%7];
+        const meta = planFor(iso);
+        cell.innerHTML = `<div class="n">${d}</div><div class="label">${dow} · S${meta.weekNum}/${getProgram().totalWeeks}</div>`;
+        if(todayISO === iso){ cell.classList.add('today'); todayEl = cell; }
+        const doneKey = `done:${programKey}:${cycleStart}:${iso}`;
         try{
           const saved = JSON.parse(localStorage.getItem(doneKey) || '[]');
-          const planLen = (planFor(iso)?.items || []).length;
+          const planLen = (meta.data?.items || []).length;
           if(saved.length && saved.filter(Boolean).length >= planLen && planLen>0){
             const dot = document.createElement('i'); dot.className='done'; cell.appendChild(dot);
           }
@@ -476,27 +690,25 @@
         });
         grid.appendChild(cell);
       }
-      // Center today vertically in the scroll area
       const sc = $('#calendarScroll');
       if(sc && todayEl){
         const top = todayEl.offsetTop + todayEl.offsetHeight/2 - sc.clientHeight/2;
         sc.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-      } else if(sc) {
-        sc.scrollTop = 0;
-      }
+      } else if(sc) { sc.scrollTop = 0; }
     }
 
-    // ===== Modal / séance du jour =====
+    // ===== Modal =====
     function openModal(iso, isToday){
-      const plan = planFor(iso);
+      const meta = planFor(iso);
       $('#modal').classList.add('open');
-      $('#modalDate').textContent = `Date : ${iso} · Jour ${dayIndex(iso)+1}/7`;
-      $('#modalTitle').textContent = plan.title;
+      $('#modalDate').textContent = `Date : ${iso} · Semaine ${meta.weekNum}/${getProgram().totalWeeks}`;
+      $('#modalTitle').textContent = meta.data?.title || "Séance";
+      $('#modalPhase').textContent = meta.phase || "";
       const UL = $('#workList'); UL.innerHTML='';
-      const key = `done:${iso}`;
+      const key = `done:${programKey}:${cycleStart}:${iso}`;
       let saved = [];
       try{ saved = JSON.parse(localStorage.getItem(key) || '[]'); }catch(e){}
-      plan.items.forEach((txt, i)=>{
+      (meta.data?.items || []).forEach((txt, i)=>{
         const li = document.createElement('li'); li.className='item';
         const cb = document.createElement('input'); cb.type='checkbox'; cb.className='check'; cb.checked = !!saved[i];
         if(!isToday) cb.disabled = true;
@@ -506,16 +718,17 @@
       });
       $('#checkAll').onclick = ()=>{
         const cbs = $$('#workList .check');
-        const allChecked = cbs.every(c=>c.checked);
+        const allChecked = cbs.every(c=>c.checked || c.disabled);
         cbs.forEach(c=>{ if(!c.disabled) c.checked = !allChecked; });
-        saved = plan.items.map((_,i)=> cbs[i].checked );
+        saved = (meta.data?.items || []).map((_,i)=> $$('#workList .check')[i].checked );
       };
       $('#saveClose').onclick = ()=>{
         localStorage.setItem(key, JSON.stringify(saved));
         closeModal(); renderCalendar();
       };
-      $('#infoNote').textContent = isToday ? "Coche les exercices à mesure. Tu peux revenir plus tard, c'est sauvegardé." : "Lecture seule pour ce jour (pas aujourd'hui).";
-      // Close handlers
+      $('#infoNote').textContent = isToday ? 
+        "Coche les exercices à mesure. Données sauvegardées pour ce programme et ce début de cycle." :
+        "Lecture seule (tu ne peux cocher que le jour actuel).";
       $('#overlay').onclick = closeModal;
       $('#close').onclick = closeModal;
       function closeModal(){ $('#modal').classList.remove('open'); }
@@ -526,30 +739,281 @@
       if(!$('#cycleStart').value) return;
       cycleStart = $('#cycleStart').value;
       localStorage.setItem('cycleStart', cycleStart);
-      renderCalendar(); renderFocus(true);
+      renderCalendar(); renderFocus();
     });
-    // "Aujourd'hui" => animation vers la date du téléphone (sans changer le cycleStart)
     $('#btnToday').addEventListener('click', ()=>{
       const direction = (todayISO > focusDate) ? 'next' : 'prev';
       animateTo(todayISO, direction);
     });
-    $('#prevBtn').addEventListener('click', ()=> {
-      const target = addDays(focusDate, -1);
-      animateTo(target, 'prev');
-    });
-    $('#nextBtn').addEventListener('click', ()=> {
-      const target = addDays(focusDate, 1);
-      animateTo(target, 'next');
+    $('#prevBtn').addEventListener('click', ()=> animateTo(addDays(focusDate,-1),'prev'));
+    $('#nextBtn').addEventListener('click', ()=> animateTo(addDays(focusDate, 1),'next'));
+    $('#programSelect').addEventListener('change', ()=>{
+      programKey = programSelect.value;
+      localStorage.setItem('programKey', programKey);
+      renderCalendar(); renderFocus();
     });
 
-    // ===== Init + Splash =====
+    // ===== Init =====
     function hideSplash(){ const s = document.getElementById('splash'); if(s) s.classList.add('hide'); }
     window.addEventListener('load', ()=>{
       renderCalendar();
-      renderFocus(true);
+      renderFocus();
       setTimeout(hideSplash, 950);
     });
   
+    // ===== Exercise Dictionary (FR/EN + how-to) =====
+    const EX_DICT = {
+      "corde à sauter": { cat:"Échauffement", fr:"Corde à sauter", en:"Jump rope",
+        how:"Saute à deux pieds ou en alternant, rythme régulier (5–10').",
+        cues:["Regarde devant","Épaules détendues","Petits rebonds rapides"] },
+      "échauffement dynamique": { cat:"Échauffement", fr:"Échauffement dynamique", en:"Dynamic warm-up",
+        how:"Enchaîne montées de genoux, talons-fesses, fentes marchées, cercles de bras (6–8').",
+        cues:["Mouvement contrôlé","Amplitude progressive"] },
+      "mobilité hanches/chevilles": { cat:"Mobilité", fr:"Mobilité hanches/chevilles", en:"Hip/ankle mobility",
+        how:"Rotations de cheville, ouverture de hanche, squat profond tenu.",
+        cues:["Respire calmement","Ne force pas la douleur"] },
+
+      "ankle hops": { cat:"Pliométrie", fr:"Sauts de chevilles", en:"Ankle hops",
+        how:"Petits sauts sur place, jambes tendues, rebond par les chevilles/mollets.",
+        cues:["Contact sol très court","Tends les chevilles","Reste gainé"] },
+      "pogos": { cat:"Pliométrie", fr:"Pogos", en:"Pogos",
+        how:"Variante plus puissante des ankle hops, cherche plus d’élévation.",
+        cues:["Explose vers le haut","Garde la cadence rapide"] },
+      "sauts verticaux max": { cat:"Pliométrie", fr:"Sauts verticaux max", en:"Max vertical jumps",
+        how:"Saute au maximum vers un repère (cercle/planche), repos complet entre répétitions.",
+        cues:["Bras fouettés","Extension triple (cheville-genou-hanche)","Atterris souple"] },
+      "fentes sautées": { cat:"Pliométrie", fr:"Fentes sautées", en:"Jump lunges",
+        how:"Depuis une fente, saute et alterne les jambes en l’air.",
+        cues:["Tronc droit","Genou avant au-dessus du pied","Réception douce"] },
+      "depth drop": { cat:"Pliométrie", fr:"Saut en contrebas (réception)", en:"Depth drop",
+        how:"Descends d’une box (30–50cm) et absorbe l’atterrissage, sans resaut.",
+        cues:["Pied à plat","Genoux souples","Tronc gainé"] },
+      "depth jump": { cat:"Pliométrie", fr:"Saut en contrebas (re-saut)", en:"Depth jump",
+        how:"Descends d’une box puis ressaute immédiatement le plus haut possible.",
+        cues:["Contact au sol minimal","Regarde le repère","Explose vers le haut"] },
+      "box jumps": { cat:"Pliométrie", fr:"Sauts sur box", en:"Box jumps",
+        how:"Saute sur un support stable, réceptionne en squat partiel.",
+        cues:["Genoux alignés","Pieds à plat sur la box","Descends prudemment"] },
+      "slalom jumps": { cat:"Pliométrie", fr:"Sauts latéraux rapides", en:"Lateral line jumps",
+        how:"Sauts gauche/droite par-dessus une ligne, à haute fréquence.",
+        cues:["Pieds rapides","Amplitude courte","Reste gainé"] },
+      "boundings": { cat:"Pliométrie", fr:"Foulées bondissantes", en:"Bounds",
+        how:"Foulées longues et explosives, comme un triple sauteur.",
+        cues:["Projette la hanche","Bras actifs","Garde l’équilibre"] },
+      "tuck jumps": { cat:"Pliométrie", fr:"Sauts groupés", en:"Tuck jumps",
+        how:"Saute haut et ramène les genoux vers la poitrine.",
+        cues:["Montée de genoux rapide","Évite l’affaissement à la réception"] },
+      "rim jumps": { cat:"Pliométrie", fr:"Sauts au cercle", en:"Rim jumps",
+        how:"Sauts répétés pour toucher le cercle, contact sol minimal.",
+        cues:["Temps de contact très court","Vise un point fixe"] },
+      "rim touches": { cat:"Pliométrie", fr:"Touches de cercle", en:"Rim touches",
+        how:"Même principe, focalisé sur la répétition propre.",
+        cues:["Cadence régulière","Atterris souple"] },
+      "seated box jumps": { cat:"Pliométrie", fr:"Sauts assis vers box", en:"Seated box jumps",
+        how:"Pars assis, lève-toi et saute immédiatement sur une box.",
+        cues:["Pas d’élan","Explose depuis l’arrêt","Réception stable"] },
+      "leap frog jumps": { cat:"Pliométrie", fr:"Sauts grenouille", en:"Leap frog jumps",
+        how:"Depuis bas, saute loin en avant en puissance.",
+        cues:["Regarde loin","Balance les bras","Atterris talon-plein pied"] },
+      "power skipping": { cat:"Pliométrie", fr:"Skippings puissants", en:"Power skipping",
+        how:"Skippings explosifs sur 20–30m, accent sur l’élévation.",
+        cues:["Genou haut","Pied actif","Rythme puissant"] },
+      "drop & freeze": { cat:"Pliométrie", fr:"Drop & Freeze (réception)", en:"Drop and freeze",
+        how:"Descends d’une box et fige la réception (stabilité).",
+        cues:["Genoux alignés avec pieds","Tronc stable","Pas de valgus"] },
+
+      "goblet squat": { cat:"Force (KB)", fr:"Squat gobelet", en:"Goblet squat",
+        how:"Tiens la KB contre la poitrine, descends en squat complet et remonte explosif.",
+        cues:["Pieds largeur épaules","Genoux suivent orteils","Dos neutre"] },
+      "soulevé jt": { cat:"Force (KB)", fr:"Soulevé de terre jambes tendues", en:"Stiff-leg deadlift",
+        how:"Descends la KB le long des cuisses, hanches en arrière, ischios étirés, remonte.",
+        cues:["Dos droit","Poids sur talons","Ne verrouille pas les genoux"] },
+      "fentes avant": { cat:"Force (KB)", fr:"Fentes avant", en:"Forward lunges",
+        how:"Grand pas devant, descends en contrôlant, pousse pour revenir.",
+        cues:["Tronc gainé","Genou au-dessus du pied","Talons au sol"] },
+      "hip thrust": { cat:"Force", fr:"Élévations de hanches", en:"Hip thrust",
+        how:"Dos sur banc, pieds au sol, monte les hanches fort en serrant les fessiers.",
+        cues:["Tête neutre","Genoux ~90° en haut","Amplitude complète"] },
+      "bulgarian split squat": { cat:"Force (KB)", fr:"Fente bulgare", en:"Bulgarian split squat",
+        how:"Pied arrière sur banc, descends en squat unilatéral, remonte.",
+        cues:["Hanche basse","Genou avant stable","Pousse le sol"] },
+      "kb swing": { cat:"Force (KB)", fr:"Swing kettlebell", en:"Kettlebell swing",
+        how:"Hinge de hanches, projette la KB à hauteur poitrine en explosant des hanches.",
+        cues:["Dos neutre","Épaules relâchées","La KB flotte"] },
+      "jump shrug": { cat:"Puissance (KB)", fr:"Haussement explosif", en:"Jump shrug",
+        how:"Flexion légère, extension violente jambe/hanche + haussement d’épaules.",
+        cues:["Pieds ancrés","Extension complète","Mouvement fluide"] },
+      "med-ball throws": { cat:"Puissance", fr:"Lancers med-ball", en:"Med-ball throws",
+        how:"Lance en arrière par-dessus la tête ou contre un mur, hanche explosive.",
+        cues:["Gainage serré","Utilise les hanches","Attrape en sécurité"] },
+      "kb throws": { cat:"Puissance (KB)", fr:"Lancers avec KB (léger)", en:"KB throws (light)",
+        how:"Variante avec charge légère et prudence si pas de med-ball.",
+        cues:["Priorité sécurité","Charge légère","Trajectoire dégagée"] },
+
+      "plank": { cat:"Core", fr:"Planche", en:"Plank",
+        how:"Appui avant-bras, corps aligné, serre fessiers et abdos.",
+        cues:["Respire","Ne cambre pas","Cou neutre"] },
+      "side plank": { cat:"Core", fr:"Planche latérale", en:"Side plank",
+        how:"Appui sur un coude côté, corps droit, hanches hautes.",
+        cues:["Épaules empilées","Hanche haute","Respire"] },
+      "hollow hold": { cat:"Core", fr:"Position creuse", en:"Hollow hold",
+        how:"Allongé, bras/jambes tendus légèrement décollés, bas du dos collé.",
+        cues:["Bas du dos au sol","Bras collés oreilles","Petite amplitude"] },
+      "anti-rotation": { cat:"Core", fr:"Anti-rotation", en:"Anti-rotation",
+        how:"Résiste à une traction latérale (élastique) sans tourner le buste.",
+        cues:["Hanches carrées","Côtes rentrées","Respire"] },
+      "twist": { cat:"Core", fr:"Rotation avec charge", en:"Russian twist",
+        how:"Assis, torse penché, pivote de gauche à droite avec charge.",
+        cues:["Mouvement contrôlé","Pas de vitesse excessive","Dos neutre"] },
+
+      "calf raises": { cat:"Mollets", fr:"Extensions mollets", en:"Calf raises",
+        how:"Monte sur la pointe des pieds puis redescends lentement.",
+        cues:["Pleine amplitude","Pause en haut","Contrôle en bas"] },
+      "back extensions": { cat:"Chaîne post.", fr:"Extensions du dos", en:"Back extensions",
+        how:"Allongé ventre au sol ou sur banc romain, tends le dos puis reviens.",
+        cues:["Ne casse pas la nuque","Monte sans jeter","Contracte fessiers"] },
+      "plyo push-ups": { cat:"Haut du corps", fr:"Pompes pliométriques", en:"Plyometric push-ups",
+        how:"Pompes avec impulsion pour décoller les mains.",
+        cues:["Coude ~45°","Tronc gainé","Amortis en douceur"] },
+      "pistol squat assisté": { cat:"Force unilat.", fr:"Pistol assisté", en:"Assisted pistol squat",
+        how:"Squat sur une jambe avec appui léger (barre/porte) pour l’équilibre.",
+        cues:["Talons au sol","Genou suit orteils","Descends contrôlé"] },
+      "single-leg rdl": { cat:"Force unilat.", fr:"SDT roumain 1 jambe", en:"Single-leg RDL",
+        how:"Charnière de hanche sur une jambe, buste penché, jambe arrière tendue.",
+        cues:["Hanches carrées","Dos neutre","Touche le sol si mobilité"] },
+
+      "sprints": { cat:"Vitesse", fr:"Sprints", en:"Sprints",
+        how:"Accélérations 20–30m, retour en marchant (repos complet).",
+        cues:["Buste légèrement penché","Genoux hauts","Bras actifs"] },
+      "mobilité": { cat:"Mobilité", fr:"Mobilité", en:"Mobility",
+        how:"Étirements dynamiques et statiques ciblés hanches/chevilles/ischios.",
+        cues:["Sans douleur","Respiration calme","Répétitions régulières"] }
+    };
+
+    
+// --- Patch: add missing exercise details ---
+try {
+  Object.assign(EX_DICT, {
+    "bulgarian split squat": {
+      cat: "Force unilatérale (Lower)",
+      fr: "Bulgarian split squat",
+      en: "Bulgarian split squat",
+      how: "Place le pied arrière sur un banc/step, l’avant assez loin pour que le tibia reste quasi vertical en bas. Descends en gardant le buste légèrement penché, bassin neutre, genou avant suivant l’axe des orteils. Remonte en poussant fort dans le talon/milieu du pied avant. Charge en goblet avec la kettlebell si indiqué.",
+      cues: [
+        "Grand pas, pied avant stable (voûte active)",
+        "Genou avant suit les orteils — pas vers l’intérieur",
+        "Buste légèrement penché, hanche avant recule",
+        "Descente contrôlée (2–3 s) → montée explosive",
+        "Talons au sol, fessiers gainés en haut (sans sur‑étendre le dos)"
+      ]
+    }
+  });
+} catch(e) { console.warn('Patch EX_DICT failed', e); }
+// --- End patch ---
+function normalizeName(txt){
+      let t = txt.toLowerCase();
+      t = t.split('·')[0]; // before dot bullet
+      t = t.split('(')[0]; // remove parenthesis
+      t = t.replace(/[0-9×x/′'″–\-]+/g,'').trim(); // remove sets/reps, dashes
+      // cleanup language tokens left by reps/units
+      t = t.replace(/\b(jambe|j|côté|scôté|main|m)\b/g,'').replace(/\s{2,}/g,' ').trim();
+      // common aliases mapping
+      const map = {
+        "depth drops":"depth drop",
+        "depth jump (re-saut)":"depth jump",
+        "box jump":"box jumps",
+        "sauts sur box":"box jumps",
+        "sauts grenouille":"leap frog jumps",
+        "touches cercle":"rim touches",
+        "touches de cercle":"rim touches",
+        "sauts au cercle":"rim jumps",
+        "skippings puissants":"power skipping",
+        "drop & freeze (réception)":"drop & freeze",
+        "soulevé jt (kb)":"soulevé jt",
+        "kb swing (balancé)":"kb swing",
+        "kb goblet squat":"goblet squat",
+        "med-ball throws":"med-ball throws"
+      };
+      return map[t] || t;
+    }
+
+    function showExerciseInfo(raw){
+      const key = normalizeName(raw);
+      const ex = EX_DICT[key];
+      $('#exModal').classList.add('open');
+      $('#exClose').onclick = closeEx; $('#exOverlay').onclick = closeEx;
+      function closeEx(){ $('#exModal').classList.remove('open'); }
+      if(!ex){
+        $('#exCat').textContent = "Bientôt";
+        $('#exTitle').textContent = raw;
+        $('#exAlt').textContent = "";
+        $('#exHow').textContent = "Description détaillée en préparation.";
+        $('#exCues').innerHTML = "";
+        $('#exNote').textContent = "Si tu veux, envoie-moi une courte vidéo et je t’ajoute des cues personnalisés.";
+        return;
+      }
+      $('#exCat').textContent = ex.cat || "";
+      $('#exTitle').textContent = ex.fr;
+      $('#exAlt').textContent = ex.en ? "EN: " + ex.en : "";
+      $('#exHow').textContent = ex.how || "";
+      const cues = ex.cues || [];
+      $('#exCues').innerHTML = cues.map(c=> `<li>${c}</li>`).join("");
+      $('#exNote').textContent = "Astuce : filme 2–3 répétitions (profil et face) pour vérifier alignement genoux/chevilles et temps de contact au sol.";
+    }
+
+    // Hook info buttons inside the workout modal items
+    const oldOpenModal = openModal;
+    openModal = function(iso, isToday){
+      oldOpenModal(iso, isToday);
+      // wait a tick to attach buttons
+      setTimeout(()=>{
+        $$('#workList .item').forEach(li=>{
+          if(li.querySelector('button.info')) return;
+          const txtNode = li.querySelector('div');
+          const label = txtNode ? txtNode.textContent : "";
+          const b = document.createElement('button');
+          b.type='button';
+          b.className='btn ghost info';
+          b.style.padding='6px 10px'; b.style.fontSize='12px';
+          b.textContent='i';
+          b.title='Détails de l’exercice';
+          b.addEventListener('click', (e)=>{
+            e.stopPropagation();
+            showExerciseInfo(label);
+          });
+          li.appendChild(b);
+        });
+      }, 0);
+    };
+
   </script>
+<!-- Exercise Info Modal -->
+<div class="modal" id="exModal">
+<div class="overlay" id="exOverlay"></div>
+<div class="sheet">
+<header>
+<div class="titleRow">
+<div>
+<div id="exCat" style="font-size:12px; color:var(--muted)"></div>
+<div id="exTitle" style="font-size:18px; font-weight:900">Exercice</div>
+<div id="exAlt" style="font-size:12px; color:var(--muted)"></div>
+</div>
+<button class="x" id="exClose">✕</button>
+</div>
+</header>
+<div class="content" id="exContent" style="display:grid; gap:10px">
+<div class="pill" id="exLangs">FR / EN</div>
+<div class="card" style="padding:12px">
+<div style="font-weight:800; margin-bottom:6px">Comment faire</div>
+<div id="exHow"></div>
+</div>
+<div class="card" style="padding:12px">
+<div style="font-weight:800; margin-bottom:6px">Cues (repères)</div>
+<ul id="exCues" style="margin:0; padding-left:18px"></ul>
+</div>
+<div class="muted" id="exNote"></div>
+</div>
+</div>
+</div>
 </body>
 </html>
