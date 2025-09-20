@@ -7,11 +7,11 @@
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="#4f86ff" name="theme-color"/>
-<link href="./manifest.webmanifest" rel="manifest"/>
+<link rel="manifest" href="./manifest.webmanifest"/>
 <link href="./icons/apple-touch-icon.png" rel="apple-touch-icon"/>
 <link href="./icons/icon-192.png" rel="icon"/>
 <meta content="telephone=no" name="format-detection"/>
-<title>Basket Jump — PWA</title>
+<title>Basket Jump — Elite</title>
 <meta content="Programmes de détente verticale (6, 10, 12 semaines) : PWA iPhone, calendrier, suivi et cases à cocher." name="description"/>
 <style>
     /* ===== Reset & base ===== */
@@ -1192,12 +1192,66 @@ function normalizeName(txt){
       return map[t] || t;
     }
 
-    function showExerciseInfo(raw){
-      const key = normalizeName(raw);
-      const ex = EX_DICT[key];
-      $('#exModal').classList.add('open');
-      $('#exClose').onclick = closeEx; $('#exOverlay').onclick = closeEx;
-      function closeEx(){ $('#exModal').classList.remove('open'); }
+    
+function showExerciseInfo(raw){
+  // Try to detect a known exercise inside the raw string
+  const s = (raw || "").toLowerCase();
+
+  // Candidate patterns -> EX_DICT keys
+  const PATTERNS = [
+    {re:/cross[-\s]?dribble/, key:"cross-dribble combo"},
+    {re:/step[-\s]?back/, key:"step-back"},
+    {re:/pull[-\s]?up/, key:"pull-up"},
+    {re:/spin move|spin\-?move/, key:"spin move"},
+    {re:/euro ?step/, key:"euro step"},
+    {re:/floater/, key:"floater"},
+    {re:/reverse ?lay[-\s]?up|lay[-\s]?up main invers[ée]e?/, key:"reverse layup"},
+    {re:/lancers?-francs?|free ?throws?|lf\b/, key:"lancers-francs"},
+    {re:/mi[-\s]?distance/, key:"tirs à mi-distance"},
+    {re:/suicides?/, key:"suicides"},
+    {re:/sprints?/, key:"sprints"},
+    {re:/dribbles? statiques?/, key:"dribbles statiques"},
+    {re:/course l[eé]g[eè]re/, key:"course légère"},
+    {re:/mont[ée]es? de genoux?/, key:"montées de genoux"},
+    {re:/talons[-\s]?fesses?/, key:"talons-fesses"},
+    {re:/pas chass[ée]s?/, key:"pas chassés"},
+    {re:/[ée]tirements? bas du corps/, key:"étirements bas du corps"},
+    {re:/[ée]tirements? complets?/, key:"étirements complets"},
+    {re:/analyse vid[ée]o/, key:"analyse vidéo"},
+    {re:/entra[iî]nement club/, key:"entraînement club"},
+  ];
+
+  let key = null;
+  for(const p of PATTERNS){
+    if(p.re.test(s)){ key = p.key; break; }
+  }
+  if(!key){
+    // Fallback to previous normalizer on the full label
+    key = normalizeName(raw);
+  }
+
+  const ex = EX_DICT[key];
+  $('#exModal').classList.add('open');
+  $('#exClose').onclick = closeEx; $('#exOverlay').onclick = closeEx;
+  function closeEx(){ $('#exModal').classList.remove('open'); }
+  if(!ex){
+    $('#exCat').textContent = "Bientôt";
+    $('#exTitle').textContent = raw;
+    $('#exAlt').textContent = "";
+    $('#exHow').textContent = "Description détaillée en préparation.";
+    $('#exCues').innerHTML = "";
+    $('#exNote').textContent = "Si tu veux, envoie-moi une courte vidéo et je t’ajoute des cues personnalisés.";
+    return;
+  }
+  $('#exCat').textContent = ex.cat || "";
+  $('#exTitle').textContent = ex.fr;
+  $('#exAlt').textContent = ex.en ? "EN: " + ex.en : "";
+  $('#exHow').textContent = ex.how || "";
+  const cues = ex.cues || [];
+  $('#exCues').innerHTML = cues.map(c=> `<li>${c}</li>`).join("");
+  $('#exNote').textContent = "Astuce : filme 2–3 répétitions (profil et face) pour vérifier alignement genoux/chevilles et temps de contact au sol.";
+}
+
       if(!ex){
         $('#exCat').textContent = "Bientôt";
         $('#exTitle').textContent = raw;
