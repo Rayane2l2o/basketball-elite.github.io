@@ -1,9 +1,9 @@
 {
-  "name": "Basket Jump — Elite",
+  "name": "Basket Jump — PWA",
   "short_name": "BasketJump",
-  "description": "Programmes basket & physique: calendrier, check-list, PWA hors-ligne.",
-  "start_url": "/",
-  "scope": "/",
+  "description": "Programmes basket & physique. PWA hors-ligne, calendrier, checklist.",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#4f86ff",
@@ -27,8 +27,7 @@
     {
       "src": "icons/icon-180.png",
       "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }
