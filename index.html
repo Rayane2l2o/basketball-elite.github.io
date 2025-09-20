@@ -216,6 +216,8 @@ html, body {
 <option value="pro6">FR · PRO Performance — 6 semaines</option>
 <option value="hg10">EN · The Hoops Geek — 10 weeks</option>
 <option value="vc12">FR · Vert Code (inspiré) — 12 semaines</option>
+
+<option value="full">FR · Programme Complet (Basket + Physique)</option>
 </select>
 <div class="pill">Début</div>
 <input id="cycleStart" type="date"/>
@@ -546,11 +548,64 @@ html, body {
       return weeks;
     }
 
+// Programme Complet (hebdo) — se répète chaque semaine
+function buildFull(){
+  const weeks = [];
+  weeks.push([
+    makeDay("S1Lun — Dribbles avancés & finition", [
+      "Échauffement : course légère 5 min, montées de genoux/talons-fesses/pas chassés 3 min, dribbles statiques 2 min",
+      "Combos Cross-Dribble (15 min) : crossover bas → entre jambes → derrière le dos",
+      "Dribble entre jambes → behind-the-back spin move",
+      "Crossover → in-and-out → changement de direction explosif",
+      "Finition Euro Step : 10 répétitions de chaque côté",
+      "Floater : 10 répétitions de chaque côté",
+      "Lay-up main inversée : 10 répétitions de chaque côté",
+      "Retour au calme : étirements bas du corps"
+    ]),
+    makeDay("S1Mar — Entraînement Club", [
+      "Concentration totale : applique les points travaillés en solo",
+      "Finitions en conditions de match (floaters, euro step, main faible)"
+    ]),
+    makeDay("S1Mer — Renforcement physique", [
+      "Échauffement identique au lundi",
+      "Jambes & explosivité : squats avec poids 4×8–10 + box jumps (ou squats sautés 4×15)",
+      "Haut du corps : développé couché 4×8 (ou pompes 4×15) + tractions 4 séries (max) (ou dips 4×15)",
+      "Gainage : planche 4×1 min",
+      "Retour au calme : étirements complets"
+    ]),
+    makeDay("S1Jeu — Vitesse & tir en situation", [
+      "Échauffement identique au lundi",
+      "Tirs après dribble (20 min) : step-back (20 tirs, mains alternées), pull-up après sprint (20 tirs)",
+      "Tirs créatifs (20 min) : spin move → tir · feinte de corps → tir en suspension",
+      "Retour au calme : étirements bas du corps"
+    ]),
+    makeDay("S1Ven — Entraînement Club", [
+      "Application : teste tes nouvelles compétences en match",
+      "Cible les floaters et euro steps quand l’occasion se présente"
+    ]),
+    makeDay("S1Sam — Match ou séance intensive", [
+      "Match : applique les combinaisons techniques apprises",
+      "Si pas de match (90 min) :",
+      "· 30 min conditionnement : suicides ×5 · sprints 15 m ×10",
+      "· 30 min technique : 10 combos cross‑dribble, 10 tirs step‑back (par côté)",
+      "· 30 min finition & tir : 20 lay‑ups · 20 lancers‑francs · 20 tirs mi‑distance"
+    ]),
+    makeDay("S1Dim — Repos & analyse", [
+      "Repos complet du corps",
+      "Analyse vidéo : observe mouvements/combos de tes joueurs préférés"
+    ])
+  ]);
+  return weeks;
+}
+
+
     const PROGRAMS = {
-      pro6: { name:"PRO Performance — 6 semaines", totalWeeks:6, weeks: buildPRO6() },
+pro6: { name:"PRO Performance — 6 semaines", totalWeeks:6, weeks: buildPRO6() },
       hg10: { name:"The Hoops Geek — 10 weeks", totalWeeks:10, weeks: buildHG10() },
       vc12: { name:"Vert Code (inspiré) — 12 semaines", totalWeeks:12, weeks: buildVC12() },
-    };
+    
+  full: { name:"Programme Complet (Basket + Physique)", totalWeeks:1, weeks: buildFull() }
+};
 
     // ===== State =====
     let today = new Date();
@@ -910,6 +965,206 @@ try {
   });
 } catch(e) { console.warn('Patch EX_DICT failed', e); }
 // --- End patch ---
+
+// --- Patch: add detailed descriptions for common conditioning & basketball skills ---
+try {
+  // Extend normalization map by wrapping existing normalizeName with extra aliases
+  const _normalizeNamePrev = normalizeName;
+  normalizeName = function(txt){
+    let t = _normalizeNamePrev(txt);
+    const m = {
+      "combos cross-dribble": "cross-dribble combo",
+      "cross dribble": "cross-dribble combo",
+      "cross-dribble": "cross-dribble combo",
+      "step back": "step-back",
+      "pull up": "pull-up",
+      "spin move": "spin move",
+      "euro step": "euro step",
+      "floater": "floater",
+      "lay-up main inversée": "reverse layup",
+      "lay up main inversée": "reverse layup",
+      "lay up inversé": "reverse layup",
+      "lancers francs": "lancers-francs",
+      "lf": "lancers-francs",
+      "tirs mi distance": "tirs à mi-distance",
+      "tirs à mi distance": "tirs à mi-distance",
+      "dribbles statiques": "dribbles statiques",
+      "course légère": "course légère",
+      "montées de genoux": "montées de genoux",
+      "talons fesses": "talons-fesses",
+      "pas chassés": "pas chassés",
+      "étirements bas du corps": "étirements bas du corps",
+      "étirements complets": "étirements complets",
+      "suicides": "suicides",
+      "sprints m": "sprints",
+      "entraînement club": "entraînement club",
+      "analyse vidéo": "analyse vidéo",
+      "conditionnement": "conditionnement"
+    };
+    return m[t] || t;
+  };
+
+  Object.assign(EX_DICT, {
+    // Échauffements & mobilité
+    "course légère": {
+      cat: "Échauffement",
+      fr: "Course légère",
+      en: "Easy jog",
+      how: "Cours à faible intensité pour élever la température corporelle et activer la mobilité (5–10 min).",
+      cues: ["Respiration nasale si possible", "Épaules détendues", "Cadence confortable"]
+    },
+    "montées de genoux": {
+      cat: "Échauffement",
+      fr: "Montées de genoux",
+      en: "High knees",
+      how: "Sur place ou en déplacement, monte les genoux à hauteur de hanche en rythme rapide.",
+      cues: ["Buste droit", "Pieds actifs", "Bras dynamiques"]
+    },
+    "talons-fesses": {
+      cat: "Échauffement",
+      fr: "Talons‑fesses",
+      en: "Butt kicks",
+      how: "Amène le talon vers les fesses en alternant, cadence légère à modérée.",
+      cues: ["Genou pointant vers le sol", "Appuis rapides", "Relâche les épaules"]
+    },
+    "pas chassés": {
+      cat: "Échauffement",
+      fr: "Pas chassés latéraux",
+      en: "Defensive slides",
+      how: "Déplacements latéraux sans croiser les pieds, bassin bas.",
+      cues: ["Hanches basses", "Pieds parallèles", "Regarde devant"]
+    },
+    "dribbles statiques": {
+      cat: "Technique balle",
+      fr: "Dribbles statiques (haut/bas/œil levé)",
+      en: "Stationary dribbles",
+      how: "Alterne dribbles hauts et bas à une main, puis change de main en gardant la tête levée.",
+      cues: ["Main au‑dessus/au côté du ballon", "Rythme contrôlé", "Posture athlétique"]
+    },
+
+    // Skills panier
+    "cross-dribble combo": {
+      cat: "Handles",
+      fr: "Combo Cross‑Dribble",
+      en: "Cross‑dribble combo",
+      how: "Enchaîne crossover bas → entre les jambes → derrière le dos, en changeant de main après chaque série.",
+      cues: ["Centre de gravité bas", "Regard levé", "Changement de rythme"]
+    },
+    "step-back": {
+      cat: "Tir après dribble",
+      fr: "Tir en step‑back",
+      en: "Step‑back jumper",
+      how: "Attaque en dribble, stop puissant, pas de recul pour créer l’espace, élève‑toi droit.",
+      cues: ["Pied d’appui stable", "Épaule/hanche vendent la menace", "Suivi du tir (wrist snap)"]
+    },
+    "pull-up": {
+      cat: "Tir après dribble",
+      fr: "Pull‑up",
+      en: "Pull‑up jumper",
+      how: "Sprint court, freinage contrôlé, élévation immédiate pour tirer en suspension.",
+      cues: ["Stop fort (2 temps/1‑2)", "Épaules au‑dessus des hanches", "Atterrissage équilibré"]
+    },
+    "spin move": {
+      cat: "Finition/Création",
+      fr: "Spin move",
+      en: "Spin move",
+      how: "Protège le ballon, pivote rapidement (360°) autour du défenseur, sors du spin équilibré vers le tir/lay‑up.",
+      cues: ["Main faible protège", "Buste gainé", "Repose les yeux sur l’anneau à la sortie"]
+    },
+    "euro step": {
+      cat: "Finition",
+      fr: "Euro step",
+      en: "Euro step",
+      how: "Deux pas latéraux alternés pour contourner le défenseur avant la finition.",
+      cues: ["Premier pas long, second anglé", "Change la vitesse", "Fixe l’aide du regard"]
+    },
+    "floater": {
+      cat: "Finition",
+      fr: "Floater",
+      en: "Floater",
+      how: "Petit tir en cloche au‑dessus des intérieurs, sans aller au contact.",
+      cues: ["Angle haut", "Poignet souple", "Élan contrôlé (1‑2 ou saut arrêté)"]
+    },
+    "reverse layup": {
+      cat: "Finition",
+      fr: "Lay‑up main inversée",
+      en: "Reverse layup",
+      how: "Utilise le côté opposé du panneau pour protéger le ballon avec le cercle.",
+      cues: ["Utilise la planche", "Change d’angle sous l’arceau", "Main loin du défenseur"]
+    },
+    "lancers-francs": {
+      cat: "Tir",
+      fr: "Lancers‑francs",
+      en: "Free throws",
+      how: "Routine identique à chaque tir ; 1 à 3 dribbles, inspire, vise l’arrière du cercle.",
+      cues: ["Pieds ancrés (largeur épaules)", "Coude sous le ballon", "Suivi poignet/bras"]
+    },
+    "tirs à mi-distance": {
+      cat: "Tir",
+      fr: "Tirs à mi‑distance",
+      en: "Mid‑range shots",
+      how: "Recevoir carré, fléchir, tirer avec un temps de suspension stable.",
+      cues: ["Équilibre 10 orteils au sol", "Coudes alignés", "Tenir la pose 1s"]
+    },
+
+    // Vitesse & conditionnement
+    "suicides": {
+      cat: "Conditionnement",
+      fr: "Suicides (navettes)",
+      en: "Suicide runs",
+      how: "Navettes terrain : ligne de lancer franc → retour, médiane → retour, opposé LF → retour, ligne de fond → retour.",
+      cues: ["Virages propres (pied extérieur)", "Bras actifs", "Respiration rythmée"]
+    },
+    "sprints": {
+      cat: "Vitesse",
+      fr: "Sprints courts (15–30 m)",
+      en: "Short sprints",
+      how: "Accélérations max sur 15–30 m, retour en marchant (repos complet).",
+      cues: ["Inclinaison légère au départ", "Genoux hauts", "Pousser fort sur 5–6 premiers appuis"]
+    },
+
+    // Récup/retour au calme
+    "étirements bas du corps": {
+      cat: "Retour au calme",
+      fr: "Étirements bas du corps",
+      en: "Lower‑body stretching",
+      how: "Ischios, quadriceps, mollets, hanches : 20–40 s par côté, 1–2 séries, sans douleur.",
+      cues: ["Respiration lente", "Ne pas rebondir", "Cherche la détente"]
+    },
+    "étirements complets": {
+      cat: "Retour au calme",
+      fr: "Étirements complets",
+      en: "Full‑body stretching",
+      how: "Chaîne antérieure/postérieure et épaules : tenir 20–40 s, 1–2 séries.",
+      cues: ["Progressif", "Sans douleur", "Hydrate‑toi après"]
+    },
+
+    // Organisation/notes
+    "entraînement club": {
+      cat: "Organisation",
+      fr: "Entraînement en club",
+      en: "Team practice",
+      how: "Transfère les acquis individuels au collectif : spacing, timing des coupes, lecture écran.",
+      cues: ["Communique", "Qualité > quantité", "Demande un feedback coach"]
+    },
+    "analyse vidéo": {
+      cat: "Apprentissage",
+      fr: "Analyse vidéo",
+      en: "Film study",
+      how: "Observe 1–2 mouvements clés d’un joueur, note points d’appuis, rythme et finitions.",
+      cues: ["Ralentis x0.5", "Arrêts image sur le pied d’appui", "Reproduis à faible intensité"]
+    },
+    "conditionnement": {
+      cat: "Conditionnement",
+      fr: "Conditionnement",
+      en: "Conditioning",
+      how: "Combine navettes type suicides et sprints courts, gestion du repos pour maintenir la qualité.",
+      cues: ["Chrono clair", "Technique de course propre", "Ne termine pas en échec total"]
+    }
+  });
+} catch(e) { console.warn('Extend EX_DICT patch failed', e); }
+// --- End conditioning/skills patch ---
+
 function normalizeName(txt){
       let t = txt.toLowerCase();
       t = t.split('·')[0]; // before dot bullet
